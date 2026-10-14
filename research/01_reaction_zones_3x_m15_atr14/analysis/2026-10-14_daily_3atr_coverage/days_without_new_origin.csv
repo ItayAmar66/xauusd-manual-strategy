@@ -1,0 +1,10 @@
+date_utc3,m1_bars,day_range_usd,new_3atr_leg_origin,any_existing_3atr_leg_overlap,data_note
+2025-01-28,1440,30.137,false,true,full_day
+2025-04-22,180,21.150,false,false,partial_day
+2025-06-27,1440,72.220,false,true,full_day
+2025-07-04,1199,21.560,false,true,partial_market_session
+2026-01-01,1319,21.363,false,true,partial_market_session
+2026-01-02,1440,92.310,false,true,full_day
+2026-02-06,1440,316.543,false,true,full_day
+2026-06-26,1440,113.160,false,true,full_day
+2026-09-25,179,10.690,false,false,partial_day
