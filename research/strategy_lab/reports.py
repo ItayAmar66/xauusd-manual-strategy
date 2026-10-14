@@ -92,7 +92,8 @@ for i,r in s.iterrows():
  stress=float(sample.net_R_stress_fee07.mean())
  full=t[t.strategy==name]
  reasons=sample.exit_reason.value_counts().to_dict()
- extra={'strategy':name,'holdout_boot_CI_low':ci_low,'holdout_boot_CI_high':ci_high,'holdout_avg_R_cost07':stress,'holdout_target_exit_pct':100*reasons.get('target',0)/len(sample),'holdout_stop_exit_pct':100*reasons.get('stop',0)/len(sample),'holdout_time_exit_pct':100*reasons.get('time',0)/len(sample),'holdout_gap_exit_pct':100*reasons.get('feed_gap',0)/len(sample),'holdout_median_risk_price':float(sample.initial_risk_price.median()),'holdout_max_risk_price':float(sample.initial_risk_price.max()),'holdout_days_no_trades':126-r.holdout_days_with_trade}
+ exceptions=int((sample.duration_minutes>120).sum())
+ extra={'strategy':name,'holdout_over120m_exceptions':exceptions, 'holdout_avg_R_excluding_over120m':float(sample.loc[sample.duration_minutes<=120,'net_R'].mean()),'holdout_boot_CI_low':ci_low,'holdout_boot_CI_high':ci_high,'holdout_avg_R_cost07':stress,'holdout_target_exit_pct':100*reasons.get('target',0)/len(sample),'holdout_stop_exit_pct':100*reasons.get('stop',0)/len(sample),'holdout_time_exit_pct':100*reasons.get('time',0)/len(sample),'holdout_gap_exit_pct':100*reasons.get('feed_gap',0)/len(sample),'holdout_median_risk_price':float(sample.initial_risk_price.median()),'holdout_max_risk_price':float(sample.initial_risk_price.max()),'holdout_days_no_trades':126-r.holdout_days_with_trade}
  ci.append(extra)
  title,definition=DESC[name[:2]]
  sample_file=name+'.md'
@@ -135,6 +136,8 @@ for i,r in s.iterrows():
 
 **מרחק SL חציוני:** ${fmt(extra['holdout_median_risk_price'],2)} במחיר XAUUSD, לפני עלויות; לא שקול לסיכון בדולרים בחשבון בלי גודל פוזיציה.
 
+**חריגת פערי נתונים:** {exceptions} עסקאות Holdout נמשכו יותר מ-120 דקות, משום שלא היו נרות מסחר זמינים בזמן הפקודה. ממוצע R בחישוב רגישות לא-סיבתי שמשמיט רק אותן עסקאות: {fmt(extra['holdout_avg_R_excluding_over120m'])}R. אסור לראות בהשמטה תיקון לביצוע בפועל: אי אפשר להבטיח יציאה בעת סגירת מסחר.
+
 ## בדיקת עמידה ביעד המשתמש
 
 - **לפחות עסקה בכל יום מסחר:** {'כן, במדגם Holdout' if extra['holdout_days_no_trades']==0 else 'לא — היו '+str(extra['holdout_days_no_trades'])+' ימי מסחר ללא כניסה'}.
@@ -152,6 +155,7 @@ for i,r in s.iterrows():
 
 summary=pd.DataFrame(ci)
 summary.to_csv(P/'selected_26_robustness.csv',index=False)
+t[t.duration_minutes>120].to_csv(P/'QA_over120min_trades.csv',index=False)
 merged=s.merge(summary,on='strategy')
 merged['holdout_stable_positive']=(merged.holdout_boot_CI_low>0)
 merged['holdout_ge_1R']=merged.holdout_avg_R>=1
@@ -169,6 +173,7 @@ All signals are formed on completed M5 candles and executed no earlier than the 
 ## Method and execution assumptions
 
 - Stop distances 0.75, 1.0, 1.5, 2.0, 2.5 × Wilder M5 ATR14 at completed signal bar, using exact M1 exits.
+- **Execution time exception:** 25 trades across all 45,009 selected-variant trades (16 in holdout) exceeded 120 elapsed minutes because quote data stopped during exchange closures or gaps. The simulator filled them at the next available M1 open; these gaps make the nominal 120-minute holding cap **not fully executable**. Per-strategy audit is in selected_26_robustness.csv.
 - Exit management: fixed 3R/4R/5R/8R, break-even after +1.5R or +2R, 1R ladders, 0.5R ladders. Stop only changes for the subsequent M1 bar.
 - If both SL and TP in the same M1 candle, assume the SL hit first. Gap-through stops fill at gap open when worse. Trades may remain open after 20:00 but no new entries outside time window.
 - Assumed fixed roundtrip execution friction: **$0.35 price per XAUUSD** base, **$0.70** stress. No true order book, commission tier, or broker tick data; live returns could differ.
@@ -179,7 +184,9 @@ All signals are formed on completed M5 candles and executed no earlier than the 
 
 ## Critical conclusion
 
-**No strategy achieved ≥ +1.00R mean per trade in independent holdout.** Having a signal every trading day is possible with time-based daily entries, but that method did not achieve the required expectancy. Entries should NOT be deployed just because the signal has high historical coverage or the favorable return multiple is 4R/8R.
+**No strategy achieved ≥ +1.00R mean per trade in independent holdout.** The 120-minute cap could not actually be met in 25 trades with market-data gaps, so no model is yet operationally validated.
+
+[QA: trades held beyond 120 minutes](QA_over120min_trades.csv) explicitly lists all such exceptions. Having a signal every trading day is possible with time-based daily entries, but that method did not achieve the required expectancy. Entries should NOT be deployed just because the signal has high historical coverage or the favorable return multiple is 4R/8R.
 
 ## Complete leaderboard — lock variants before holdout
 
