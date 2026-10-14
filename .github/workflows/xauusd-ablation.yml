@@ -1,0 +1,57 @@
+name: XAUUSD Condition Ablation and Adaptive Test
+on:
+  push:
+    paths:
+      - 'research/parameter_bank/ablation/*.py'
+      - '.github/workflows/xauusd-ablation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  experiments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scientific stack
+        run: python -m pip install 'numpy>=1.26,<3' 'pandas>=2.1,<3' 'numba>=0.60,<0.65' 'scikit-learn>=1.4,<2'
+      - name: Backtest 348 fixed experiment variants
+        run: python 'research/parameter_bank/ablation/ablation.py'
+      - name: Expanding-window train-before-test checks
+        run: python 'research/parameter_bank/ablation/walkforward.py'
+      - name: Fit and evaluate 50-feature statistical selector
+        run: python 'research/parameter_bank/ablation/statistical_selector.py'
+      - name: Week-cluster intervals for marginal candidates
+        run: python 'research/parameter_bank/ablation/bootstrap.py'
+      - name: Verify completeness and timestamp/QA invariants
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path('research/parameter_bank/ablation')
+          a=pd.read_csv(p/'all_348_ablations.csv')
+          f=pd.read_csv(p/'fixed4_all_116_filters.csv')
+          w=pd.read_csv(p/'rolling_16_train_before_test_folds.csv')
+          s=pd.read_csv(p/'train_selected_four.csv')
+          m=pd.read_csv(p/'ml_selector_period_results.csv')
+          t=pd.read_csv(p/'ml_selector_trade_log.csv')
+          b=pd.read_csv(p/'three_positive_variants_bootstrap.csv')
+          assert (len(a),len(f),len(w),len(s),len(m),len(b))==(348,116,16,4,10,3)
+          assert len(t)>1000
+          assert json.loads((p/'summary.json').read_text())['over120_events_across_all_tests']==0
+          assert (m.loc[m.strategy=='gradient_boosted_condition_selector','avg_R'].notna()).all()
+          assert int((s.review_REUSED_avg_R>=1).sum())==0
+          print('PASS: 348 tests; 16 sequential folds; ML comparison; per-entry log; QA.')
+          PY
+      - name: Commit every reproducible result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 'research/parameter_bank/ablation/'
+          if ! git diff --cached --quiet; then
+            git commit -m 'research(ablation): publish 348 tests, rolling stability and adaptive model outcomes'
+            git push
+          fi
