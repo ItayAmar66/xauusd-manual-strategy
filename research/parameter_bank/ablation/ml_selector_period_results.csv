@@ -1,0 +1,11 @@
+period,strategy,selected_train_percentile,threshold,selection_only_using_past,n,avg_R,total_R,coverage_pct,winrate_pct,maxdd_R,gap_n
+2025H1_IN_SAMPLE_AFTER_REFIT,gradient_boosted_condition_selector,50.0,-0.08597328074675517,True,1210,0.112993,136.721,100.0,36.529,-56.416,0
+2025H2_IN_SAMPLE_AFTER_REFIT,gradient_boosted_condition_selector,50.0,-0.08597328074675517,True,1242,0.128135,159.144,99.237,35.749,-28.168,1
+2026Q1_IN_SAMPLE_AFTER_REFIT,gradient_boosted_condition_selector,50.0,-0.08597328074675517,True,637,0.052207,33.256,98.438,32.653,-55.238,0
+2026Q2_REUSED,gradient_boosted_condition_selector,50.0,-0.08597328074675517,True,702,-0.062844,-44.116,100.0,29.915,-76.89,0
+2026Q3_REUSED,gradient_boosted_condition_selector,50.0,-0.08597328074675517,True,729,-0.092888,-67.715,100.0,30.727,-81.108,0
+2025H1_IN_SAMPLE_AFTER_REFIT,all_triggers_fixed4,0.0,0.0,True,1637,-0.023359,-38.238,100.0,34.27,-127.378,0
+2025H2_IN_SAMPLE_AFTER_REFIT,all_triggers_fixed4,0.0,0.0,True,1771,-0.095617,-169.337,99.237,30.548,-201.272,2
+2026Q1_IN_SAMPLE_AFTER_REFIT,all_triggers_fixed4,0.0,0.0,True,838,-0.12195,-102.194,98.438,28.998,-146.159,0
+2026Q2_REUSED,all_triggers_fixed4,0.0,0.0,True,839,-0.090558,-75.979,100.0,30.751,-99.475,1
+2026Q3_REUSED,all_triggers_fixed4,0.0,0.0,True,853,-0.079079,-67.454,100.0,31.301,-88.318,1

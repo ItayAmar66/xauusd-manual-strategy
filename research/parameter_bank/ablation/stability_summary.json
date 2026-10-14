@@ -1,0 +1,14 @@
+{
+  "tests": 348,
+  "both_train_and_reused_review_positive": 3,
+  "all_five_regimes_positive": 0,
+  "rolling_trigger_weighted_avg_R": {
+    "body": -0.05234131671172228,
+    "breakout12": -0.055400024204273875,
+    "engulfing": -0.055909613324741016,
+    "rejection": -0.04650452713665116
+  },
+  "rolling_all_total_R": -555.892756177737,
+  "rolling_all_n": 10723,
+  "rolling_all_weighted_R": -0.05184115976664525
+}

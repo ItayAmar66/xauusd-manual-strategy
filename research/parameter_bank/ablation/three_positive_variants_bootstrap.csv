@@ -1,0 +1,4 @@
+trigger,filter,manager,review_n,review_avg_R,review_boot95_lower_R,review_boot95_upper_R,review_bootstrap_prob_mean_positive,review_gap_stress_n,statistical_note
+engulfing,M15_H1_ALIGNED,be1.5_tp4,460,0.04584440788155919,-0.09255256522436917,0.1883160812213635,0.7396666666666667,1,posthoc selected; no familywise correction; cannot call confirmed edge
+engulfing,M15_H1_ALIGNED,ladder0.5_tp5,510,0.00831302333772423,-0.10293541739849583,0.1257873624156889,0.555,1,posthoc selected; no familywise correction; cannot call confirmed edge
+breakout12,M15_H1_ALIGNED,ladder0.5_tp5,443,-0.000777197234242297,-0.10886147430234282,0.11588336059191291,0.48733333333333334,1,posthoc selected; no familywise correction; cannot call confirmed edge

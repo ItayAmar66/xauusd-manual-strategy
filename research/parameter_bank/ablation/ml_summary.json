@@ -1,0 +1,16 @@
+{
+  "candidates": 114704,
+  "independent_gap_stress_n": 75,
+  "features": 50,
+  "model": "HistGradientBoostingRegressor",
+  "train1_through": "2025-06-30",
+  "validation": "2025-07-02 through 2025-12-31",
+  "final_train_through": "2026-03-31",
+  "reused_review": "2026-04-02 through 2026-09-25",
+  "percentile_selected_on_validation": 50.0,
+  "actual_2025H2_validation_mean_R_at_selected_threshold": -0.04683,
+  "actual_2025H2_validation_n_at_selected_threshold": 1406,
+  "chosen_threshold": -0.08597328074675517,
+  "review_status": "REUSED_NOT_UNTOUCHED",
+  "note": "model estimates a hypothetical 4R outcome; signals were not selected by the retrospective winning-leg catalog"
+}

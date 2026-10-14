@@ -1,0 +1,17 @@
+{
+  "m1_bars": 760337,
+  "candidate_m5_signal_times": 75264,
+  "triggers": 4,
+  "filters_including_none": 29,
+  "managers": 3,
+  "tests": 348,
+  "cost_dollars_per_trade": 0.35,
+  "over120_events_across_all_tests": 0,
+  "gap_proxy_exits_across_all_tests": 437,
+  "min_train_n_for_selection": 100,
+  "max_review_avg_R_all_tests": 0.1518061600190267,
+  "max_review_avg_R_eligible": 0.1518061600190267,
+  "train_selection_four_review_ge_1R": 0,
+  "selection_status": "reused_review_NOT_fresh_holdout",
+  "runtime_s": 3.96
+}
