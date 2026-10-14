@@ -39,7 +39,7 @@ jobs:
           assert len(c)==194
           assert c.duration_minutes.max()<=120
           local=pd.to_datetime(c.fill_israel,utc=True).dt.tz_convert('Asia/Jerusalem')
-          assert ((local.hour>=6)&(local.hour<20)&(local.weekday<5)).all()
+          assert ((local.dt.hour>=6)&(local.dt.hour<20)&(local.dt.weekday<5)).all()
           assert (c.original_risk_price_usd>=0.65).all()
           assert c.period.nunique()==3
           print('PASS: 1530 market variants, 240 limits, 194 detailed candidate fills')
