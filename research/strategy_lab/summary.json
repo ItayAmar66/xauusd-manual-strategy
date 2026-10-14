@@ -1,0 +1,13 @@
+{
+  "split": "2026-04-01",
+  "train_market_days": 320,
+  "holdout_market_days": 126,
+  "strategy_families": 26,
+  "variants": 1170,
+  "assumed_cost_price": 0.35,
+  "assumed_stress_cost_price": 0.7,
+  "max_holding_minutes": 120,
+  "selected_holdout_R_positive": 4,
+  "selected_holdout_R_ge_1": 0,
+  "selected_holdout_coverage_ge_95": 18
+}
