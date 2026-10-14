@@ -131,3 +131,26 @@ for period,g in log.groupby('period'):
     'days_traded':len(set(pd.to_datetime(g.fill_israel,utc=True).dt.tz_convert('Asia/Jerusalem').dt.date))}
 with open(P/'candidate_PD_H1_summary.json','w') as f:json.dump(summary,f,indent=2)
 print('PREDECLARED DAILY SWEEP + H1 CANDIDATE:');print(json.dumps(summary,indent=2))
+
+# Reproducible sensitivity and exploratory weekly cluster bootstrap, no claim of valid CI
+from itertools import groupby
+x=log.copy()
+sensitivity={}
+for group_name,g in x.groupby('period'):
+    sensitivity[group_name]={
+      'meanR_fee_0_35':float(g.net_R.mean()),
+      'meanR_fee_0_70':float((g.net_R-0.35/g.original_risk_price_usd).mean()),
+      'meanR_fee_1_00':float((g.net_R-0.65/g.original_risk_price_usd).mean()),
+      'median_stop_distance':float(g.original_risk_price_usd.median())}
+review=x[x.period=='2026Q2Q3_reused_review'].copy()
+review['week']=pd.to_datetime(review.fill_israel,utc=True).dt.tz_convert('Asia/Jerusalem').dt.strftime('%G-W%V')
+clusters=[g.net_R.to_numpy() for _,g in review.groupby('week')]
+rng=np.random.default_rng(20261014)
+bootstrap=np.empty(10000)
+for n in range(len(bootstrap)):
+    ids=rng.integers(0,len(clusters),size=len(clusters))
+    bootstrap[n]=np.concatenate([clusters[q] for q in ids]).mean()
+robust={'week_clusters':len(clusters),'review_week_block_bootstrap_exploratory_CI95':np.percentile(bootstrap,[2.5,97.5]).tolist(),
+'bootstrap_fraction_positive':float((bootstrap>0).mean()),'cost_sensitivity_XAUUSD_price_units':sensitivity,
+'warning':'Exploratory posthoc selection, intervals not adjusted for familywise comparison; not evidence of live edge'}
+(P/'candidate_cost_robustness.json').write_text(json.dumps(robust,indent=2))
