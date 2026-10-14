@@ -1,0 +1,11 @@
+{
+  "m1_candles": 760337,
+  "signal_bars": 75264,
+  "bank_conditions": 43,
+  "prototype_playbooks": 16,
+  "prototype_configurations": 96,
+  "reused_period_is_not_new_holdout": true,
+  "positive_reused_fixed4": 5,
+  "over_1R_reused_fixed4": 0,
+  "prototype_trades_all_configs": null
+}
