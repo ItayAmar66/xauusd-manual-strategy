@@ -1,0 +1,19 @@
+{
+  "m1_bars": 760337,
+  "m5_candles": 152070,
+  "events": 4584,
+  "threshold_atr": 4,
+  "min_ratio": 4.002870883831058,
+  "ambiguous": 291,
+  "duration_1_to_120": 2504,
+  "duration_gt120": 1789,
+  "market_days": 449,
+  "days_with_new_leg": 447,
+  "days_without_new_leg": 2,
+  "sessions": {
+    "Outside": 2380,
+    "Asia": 1268,
+    "London": 482,
+    "New York": 454
+  }
+}
