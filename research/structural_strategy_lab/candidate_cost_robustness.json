@@ -1,0 +1,29 @@
+{
+  "week_clusters": 18,
+  "review_week_block_bootstrap_exploratory_CI95": [
+    -0.39394755753227445,
+    0.49938663847312004
+  ],
+  "bootstrap_fraction_positive": 0.5426,
+  "cost_sensitivity_XAUUSD_price_units": {
+    "2025_development": {
+      "meanR_fee_0_35": 0.06447736147595054,
+      "meanR_fee_0_70": -0.1407824481703678,
+      "meanR_fee_1_00": -0.316719427867212,
+      "median_stop_distance": 1.897708108155257
+    },
+    "2026Q1_validation": {
+      "meanR_fee_0_35": 0.8613015837564184,
+      "meanR_fee_0_70": 0.7529943264270575,
+      "meanR_fee_1_00": 0.6601595344304626,
+      "median_stop_distance": 5.238562437709334
+    },
+    "2026Q2Q3_reused_review": {
+      "meanR_fee_0_35": 0.021143851505127754,
+      "meanR_fee_0_70": -0.13963985966886014,
+      "meanR_fee_1_00": -0.27745446924656414,
+      "median_stop_distance": 2.894487633045628
+    }
+  },
+  "warning": "Exploratory posthoc selection, intervals not adjusted for familywise comparison; not evidence of live edge"
+}

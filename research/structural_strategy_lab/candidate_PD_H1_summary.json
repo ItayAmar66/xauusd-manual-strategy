@@ -1,0 +1,32 @@
+{
+  "2025_development": {
+    "n": 111,
+    "avg_R": 0.06447736147595054,
+    "win_rate_pct": 27.927927927927925,
+    "total_R": 7.15698712383051,
+    "max_drawdown_R": -14.365452754559776,
+    "max_loss_streak": 8,
+    "median_hold_min": 8.0,
+    "days_traded": 57
+  },
+  "2026Q1_validation": {
+    "n": 23,
+    "avg_R": 0.8613015837564184,
+    "win_rate_pct": 43.47826086956522,
+    "total_R": 19.809936426397623,
+    "max_drawdown_R": -4.273406051947639,
+    "max_loss_streak": 4,
+    "median_hold_min": 6.0,
+    "days_traded": 13
+  },
+  "2026Q2Q3_reused_review": {
+    "n": 60,
+    "avg_R": 0.021143851505127754,
+    "win_rate_pct": 23.333333333333332,
+    "total_R": 1.2686310903076652,
+    "max_drawdown_R": -14.576919504874812,
+    "max_loss_streak": 10,
+    "median_hold_min": 7.0,
+    "days_traded": 25
+  }
+}

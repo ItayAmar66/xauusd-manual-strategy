@@ -1,0 +1,33 @@
+{
+  "M1_candles": 760337,
+  "variations": 1530,
+  "selected_families": 16,
+  "periods": [
+    [
+      "dev_2025",
+      28928040,
+      29453640
+    ],
+    [
+      "validation_2026Q1",
+      29453640,
+      29583180
+    ],
+    [
+      "review_reused_2026Q2Q3",
+      29583180,
+      29846700
+    ]
+  ],
+  "assumed_cost_XAUUSD_price": 0.35,
+  "data_start": "2025-01-01 02:00:00+02:00",
+  "data_end": "2026-09-25 02:58:00+03:00",
+  "caveats": [
+    "2026 reviewed repeatedly in prior research",
+    "bid OHLC only and artificial cost",
+    "same-bar stop-first",
+    "no fresh untouched holdout",
+    "ZigZag winners never used as signals"
+  ],
+  "runtime_sec": 9.29
+}
