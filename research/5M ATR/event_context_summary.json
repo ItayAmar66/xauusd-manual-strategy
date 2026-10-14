@@ -1,0 +1,32 @@
+{
+  "events": 4584,
+  "ambiguous": 291,
+  "avg_candidate_conditions": 4.8815445026178015,
+  "no_match": 29,
+  "counts": {
+    "active_fvg_D1_BEAR": 571,
+    "active_fvg_D1_BULL": 664,
+    "active_fvg_H1_BEAR": 900,
+    "active_fvg_H1_BULL": 911,
+    "active_fvg_H4_BEAR": 935,
+    "active_fvg_H4_BULL": 739,
+    "active_fvg_M1_BEAR": 1003,
+    "active_fvg_M1_BULL": 1051,
+    "active_fvg_M15_BEAR": 1086,
+    "active_fvg_M15_BULL": 973,
+    "active_fvg_M5_BEAR": 980,
+    "active_fvg_M5_BULL": 937,
+    "origin_touches_prev_day_liquidity": 1858,
+    "origin_touches_prev_week_liquidity": 1005,
+    "origin_touches_prev_month_liquidity": 841,
+    "origin_new_5m_extreme": 4110,
+    "origin_new_15m_extreme": 4030,
+    "origin_new_60m_extreme": 3821,
+    "prior_M1_15m_direction_opposite_leg": 3893,
+    "M5_trend_opposes_direction": 3469,
+    "M15_trend_opposes_direction": 3117,
+    "H1_trend_opposes_direction": 2273,
+    "H4_trend_opposes_direction": 2344
+  },
+  "max_conditions": 13
+}
