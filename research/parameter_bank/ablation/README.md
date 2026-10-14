@@ -31,9 +31,9 @@ Beyond rigid AND/OR recipes, `statistical_selector.py` explores a **50-feature**
 
 - 114,704 direction-specific historical candidate signals before removing same-time conflicts and overlapping active positions.
 - **Train 2025H1**, choose one risk/coverage threshold using **2025H2**, then refit on data through 2026Q1 before reviewing Apr–Sep 2026.
-- Actual 2025H2 threshold-selection evaluation on the model trained on 2025H1: **−0.0552R** (1,404 trades). **Do not confuse this with the +0.118R shown by the subsequent refitted model on its IN-SAMPLE 2025H2 data.**
-- Reused 2026Q2 review: 702 entries, **−0.0716R**, 100% calendar coverage.
-- Reused 2026Q3 review: 745 entries, **−0.1140R**, 100% coverage.
+- Actual 2025H2 threshold-selection evaluation on the model trained on 2025H1: **−0.0468R** (1,406 trades). **Do not confuse this with the +0.128R shown by the subsequent refitted model on its IN-SAMPLE 2025H2 data.**
+- Reused 2026Q2 review: 702 entries, **−0.0628R**, 100% calendar coverage.
+- Reused 2026Q3 review: 745 entries, **−0.0929R**, 100% coverage.
 - Therefore **the adaptive weighting model does NOT meet the +1R objective**. High daily coverage alone is not positive expectancy.
 
 ## Time/data QA
@@ -69,3 +69,4 @@ We can reliably say the **tested rules/filters/management settings did not show 
 4. Run independent tick/quote and cost/spread sensitivity before considering capital deployment.
 
 **Run locally or through GitHub Actions**: From repo root, with dependencies pandas, numpy, numba and scikit-learn, execute `python 'research/parameter_bank/ablation/ablation.py'`, then `walkforward.py`, `statistical_selector.py`, `bootstrap.py`. The workflow commits all output tables; it never reuses the historical winning-leg labels to choose trade entries.
+**Reproducibility note:** A local rerun and GitHub Actions run gave slightly different gradient-boosting regression scores because the scientific Python dependency/runtime environments are not identical. The 348 deterministic rule tests and rolling tests agreed. Numbers quoted above use the verified committed GitHub Actions results. Freeze the exact numerical dependency versions before any pre-registered out-of-sample test.
