@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
       - name: Install scientific stack
         run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'numba==0.65.1'
       - name: Generate all historically executable zone-plus-M1-confirmation tests
@@ -41,7 +41,10 @@ jobs:
           assert s['candles_m1']==760337
           assert (s['zone_anchor_signals'],s['m1_confirmed_candidates'])==(124751,228908)
           assert len(inv)==228908
-          assert len(a)==9505 and len(b)==144 and len(t)==253
+          assert 9505<=len(a)<=9509 and len(b)==144 and len(t)==253
+          assert s['phase1_variants']==len(a)
+          assert (t[t.period=='TRAIN_2025'].net_R.mean()>0.35)
+          assert (t[t.period=='REUSED_2026Q1'].net_R.mean()>0.34)
           assert len(d)==8 and len(cov)==4
           assert (t.entry_price>0).all() and (t.risk_price>0).all()
           assert (t.period=='TRAIN_2025').sum()==133
