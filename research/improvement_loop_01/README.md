@@ -64,3 +64,26 @@ Files generated:
 - `matched_entry_management_trades.csv` — all 7,590 counterfactual trade results.
 - `management_selected_train_only.csv` — ranked using 2025 data only.
 - `bootstrap_paired_weekly.csv` — paired and absolute block-bootstrap interval results.
+
+## 3. Iteration 02 — Entry-confirmation timing (causal-at-entry gate)
+
+The fixed-entry trade cohort was joined, by next-open minute and direction, with the original causal `../reaction_confirmation_lab/confirmed_entry_inventory.csv` row. For all 253 entries we obtained the historical sweep anchor and the minute the confirming candle closed. **All timing and confirmation-candle geometry are known at entry**. No future MFE/MAE was used for filtering.
+
+We checked 16 transparent gates (including no filter): lag up to 2/3/4 minutes, candle-body thresholds, relative candle range, and distance from sweep origin. We held the initial entry, original stop, 6R TP and no-BE exit manager fixed. Train-only ranking with `2025 n >= 75` preferred **`CONFIRM_LAG_LE3`** (confirmation within 3 M1 bars after the original zone event).
+
+| Fixed TP6 strategy | 2025 n, mean R | 2026Q1 n, mean R | 2026Q2–Q3 n, mean R |
+|---|---|---|---|
+| All confirmed entries | 133, +0.389R | 41, +0.370R | 79, +0.118R |
+| **Confirmation <=3 minutes** | **81, +0.487R** | **27, +0.604R** | **50, +0.240R** |
+
+In *2025 H1*, however, the 3-minute filter underperformed the baseline (+0.281R vs +0.535R), while in 2025 H2 it outperformed (+0.643R vs +0.273R). This is not yet a reliable signal. A weekly-block bootstrap of the filtered-minus-unfiltered improvement in 2026Q2–Q3 had a 95% exploratory interval of **−0.299R to +0.470R**. The filter reduces the number of active days and therefore does not satisfy one trade daily.
+
+**Methodology limitation:** This is an ablation on the original cohort, not a complete re-arbitration against all unused signals. Some new entries would have been available once dropped trades no longer blocked a position. Before any live or funded trading, replay the filter on all eligible M1 signals with a one-position-at-a-time simulator, freeze the candidate, then run on **genuinely unseen** fresh broker/tick data. The original candidate itself was posthoc selected on 2025, so 2025 split performance cannot be called pristine out-of-sample.
+
+Reproduce with:
+```bash
+python 'research/improvement_loop_01/entry_filter_ablation.py'
+```
+Outputs: `entry_filter_16x4.csv`, `entry_filter_2025_rank.csv`, `entry_features_on_253_original_entries.csv`, `entry_gate_week_bootstrap.csv`.
+
+**Bottom line:** Two valid controlled iterations support continued research but **do not establish +1R expectancy, 50% WR @ 3R, or daily coverage**. More filtering and unlimited searching of reused 2026 can only increase false discoveries. The improvement loop should next expand candidate-family coverage and use independent future data, rather than force a positive backtest.
