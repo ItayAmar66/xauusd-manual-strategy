@@ -14,7 +14,7 @@
 - **760,337** raw M1 candles; same archived ZIP as the original research.
 - **124,751** candidate historical zone interactions (D1/W1/Asia/15m–120m sweeps, structural retests and M5/M15/H1/H4 FVG contacts). As-of candidates from `structural_v2` and not selected from future winners.
 - **228,908** M1-confirmed signal candidates after checking five independently observable trigger patterns in the 1–6 minutes after a zone event.
-- **9,505** first-stage strategy versions, using only direct-next-open entry, fixed TP at 2R/3R and 3 alternative stops.
+- **9,509** first-stage strategy versions, using only direct-next-open entry, fixed TP at 2R/3R and 3 alternative stops.
 - **144** second-stage order/exit-management versions chosen from 18 2025-ranked entry recipes; options: next open vs 5-minute midpoint limit, fixed / BE at 1R / BE at 1.5R / half-R trailing after 1R.
 - Backtest decisions are causal, but selecting from thousands of combinations creates substantial **multiple-testing / overfitting** risk. 2026 data have been reused in prior conversations and are **NOT a fresh untouched test**. A separate broker-aware forward paper-trading validation is necessary.
 
@@ -50,7 +50,7 @@ The order can enter no earlier than the **next** M1 open. Pending limits expire 
 | Jan–Mar 2026 (reused research) | 41 | 48.78% | +0.34442R | +0.31414R | [−0.164, +0.792] |
 | Apr–Sep 2026 (reused research) | 79 | 30.38% | **−0.02166R** | **−0.05811R** | [−0.341, +0.346] |
 
-Overall 253 trades. For the chosen configuration: **57 hit full +3R**, **140 hit stop**, **56 exited at 120-minute horizon**, 0 data-gap exits, and no trade went beyond 120 minutes. Earlier gains are **not a reliable estimate of future profitability**. No 2025 strategy (at least 100 training trades) in the 9,505 phase-1 trials had ≥50% win rate with 3R.
+Overall 253 trades. For the chosen configuration: **57 hit full +3R**, **140 hit stop**, **56 exited at 120-minute horizon**, 0 data-gap exits, and no trade went beyond 120 minutes. Earlier gains are **not a reliable estimate of future profitability**. No 2025 strategy (at least 100 training trades) in the 9,509 phase-1 trials had ≥50% win rate with 3R.
 
 ### Does *waiting for M1 confirmation* add value?
 
@@ -74,10 +74,10 @@ This is the precise finding relevant to the trader's hypothesis: **confirmation 
 
 ## Reproduce on GitHub
 
-- `research.py`: loads `../15M ATR/XAUUSD_Manual_Strategy_Research_Git_Import.zip` and `../structural_v2/signal_inventory.csv`, generates raw M1-confirmed setups, screens 9,505 combinations and 144 management variants, selects ONLY on 2025.
+- `research.py`: loads `../15M ATR/XAUUSD_Manual_Strategy_Research_Git_Import.zip` and `../structural_v2/signal_inventory.csv`, generates raw M1-confirmed setups, screens 9,509 combinations and 144 management variants, selects ONLY on 2025.
 - `diagnostics.py`: baseline same-zone immediate entry vs M1-confirmed entry, chronology-preserving period reports, daily coverage and unadjusted week-block bootstrap intervals.
 - `confirmed_entry_inventory.csv`: each M1 confirmation record (228,908 rows).
-- `phase1_all_strategies.csv`: every one of 9,505 screening results.
+- `phase1_all_strategies.csv`: every one of 9,509 screening results.
 - `phase2_selected_144_variants.csv`: additional management/limit tests.
 - `train_selected_18.csv`, `train_only_top12.csv`: selection and ranking audit.
 - `train_chosen_trade_log.csv`: **all 253 entries including dates, entry/SL/TP and exit**.
@@ -85,3 +85,4 @@ This is the precise finding relevant to the trader's hypothesis: **confirmation 
 - `summary.json`, `diagnostic_summary.json`: fixed-count QA.
 
 **Research outcome:** A reproducible strategy *candidate* was identified, but there is **no validated +1R net/trade strategy meeting the daily frequency requirement**, and it would be misleading to claim otherwise.
+**Numerical reproducibility note:** The pinned GitHub Actions Python 3.13 scientific stack generated 9,509 phase-1 records, versus 9,505 in the local runtime. The four-record difference occurs in marginal min-sample screening, but the selected rule, 253 trades, complete 2025/2026 period results and 228,908 candidate M1 confirmations matched. Treat the Github-run file as canonical; do not assume every binary/runtime environment will produce byte-for-byte identical screening around floating point cutoffs.
