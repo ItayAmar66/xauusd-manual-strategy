@@ -1,0 +1,13 @@
+{
+  "candles_m1": 760337,
+  "zone_anchor_signals": 124751,
+  "m1_confirmed_candidates": 228908,
+  "phase1_variants": 9509,
+  "phase2_variants": 144,
+  "review_2026_is_reused": true,
+  "train_selection_train_only": true,
+  "ranked_rule_candidates": 128,
+  "fee_in_xauusd_price_units": 0.35,
+  "entry_hours": "06:00-20:00 Asia/Jerusalem",
+  "max_hold_minutes": 120
+}

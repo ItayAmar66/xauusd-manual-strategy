@@ -1,0 +1,5 @@
+rule,period,market_days,days_traded,day_coverage_pct,n
+after_confirm,train_2025,259,94,36.29,133
+after_confirm,reused_2026,190,77,40.53,120
+immediate,train_2025,259,134,51.74,340
+immediate,reused_2026,190,94,49.47,220

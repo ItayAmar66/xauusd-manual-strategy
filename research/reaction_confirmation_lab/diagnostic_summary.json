@@ -1,0 +1,21 @@
+{
+  "baseline_n": 560,
+  "confirmed_n": 253,
+  "full_days_eligible": 449,
+  "selected_rule": {
+    "family": "30M_SWEEP",
+    "trigger": "MICRO_BOS3",
+    "filter": "H1_M15_H4",
+    "session": "ny_open",
+    "stop": "M15_ATR1",
+    "TP_R": 3.0,
+    "order": "NEXT_OPEN",
+    "management": "FIXED"
+  },
+  "caveats": [
+    "2026 review was previously reused",
+    "week bootstrap post selection unadjusted for many trials",
+    "bid OHLC and approximate fees",
+    "no daily-coverage guarantee"
+  ]
+}
