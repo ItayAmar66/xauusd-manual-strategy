@@ -85,7 +85,7 @@ def stream(jj,sg,side,stop,ref,modes,rrs,mgmts,priority,op,hi,lo,cl,ts,can):
    if d==-1 and canst<curst:curst=canst
   out[n,:]=np.array([j,filled,ex,z,d,p,st,xp,risk,(xp-p)*d/risk-.35/risk,ts[ex]-ts[filled],why,rr,mode,mgmt]);n+=1;locked=ex
  return out[:n]
-res=stream(all_.entry_m1.to_numpy(np.int64),all_.signal_m1.to_numpy(np.int64),all_.side.to_numpy(np.int8),all_.stop.to_numpy(float),all_.reference.to_numpy(float),all_.mode.to_numpy(int),all_.rr.to_numpy(int),all_.mgmt.to_numpy(int),all_.priority.to_numpy(int),o,h,l,c,t,allowed)
+res=stream(all_.entry_m1.to_numpy(np.int64),all_.signal_m1.to_numpy(np.int64),all_.side.to_numpy(np.int8),all_.stop.to_numpy(float),all_.reference.to_numpy(float),all_['mode'].to_numpy(int),all_.rr.to_numpy(int),all_.mgmt.to_numpy(int),all_.priority.to_numpy(int),o,h,l,c,t,allowed)
 rows=[]
 for v in res:
  j,fi,ex,zz=[int(z) for z in v[:4]]
