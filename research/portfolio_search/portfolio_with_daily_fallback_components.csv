@@ -1,0 +1,16 @@
+period,strategy,n,net_R,avg_R,days,variant
+2025_dev,Daily_0610_M15_Trend,257,-36.7243180423975,-0.14289617915329766,257,portfolio_with_daily_fallback
+2025_dev,engulf|hour_15_17|m15_aligned|prior15_aligned,78,69.39871121197939,0.8897270668202486,73,portfolio_with_daily_fallback
+2025_dev,h1_fvg|hour_15_17|h1_aligned|h4_opposite,77,28.871208343654875,0.3749507577098036,40,portfolio_with_daily_fallback
+2025_dev,h4_fvg|hour_15_17|m15_opposite|m5_up,63,78.43980625271797,1.2450762897256822,39,portfolio_with_daily_fallback
+2025_dev,rsi_fade|hour_15_17|h1_opposite|weekly_opposite_side,55,47.74304389953613,0.8680553436279297,29,portfolio_with_daily_fallback
+2026Q1_validation,Daily_0610_M15_Trend,63,10.263883376494054,0.16291878375387386,63,portfolio_with_daily_fallback
+2026Q1_validation,engulf|hour_15_17|m15_aligned|prior15_aligned,32,-2.9615897946059704,-0.09254968108143657,27,portfolio_with_daily_fallback
+2026Q1_validation,h1_fvg|hour_15_17|h1_aligned|h4_opposite,17,-10.867681860923767,-0.639275403583751,7,portfolio_with_daily_fallback
+2026Q1_validation,h4_fvg|hour_15_17|m15_opposite|m5_up,14,-0.014862656593322754,-0.0010616183280944824,6,portfolio_with_daily_fallback
+2026Q1_validation,rsi_fade|hour_15_17|h1_opposite|weekly_opposite_side,22,-3.3741225004196167,-0.15336920456452804,8,portfolio_with_daily_fallback
+2026Q2Q3_reused,Daily_0610_M15_Trend,126,-43.54306407645345,-0.3455798736226464,126,portfolio_with_daily_fallback
+2026Q2Q3_reused,engulf|hour_15_17|m15_aligned|prior15_aligned,44,21.292347475886345,0.483916988088326,39,portfolio_with_daily_fallback
+2026Q2Q3_reused,h1_fvg|hour_15_17|h1_aligned|h4_opposite,65,-17.48957473039627,-0.26907038046763493,28,portfolio_with_daily_fallback
+2026Q2Q3_reused,h4_fvg|hour_15_17|m15_opposite|m5_up,46,-15.805704355239868,-0.343602268592171,18,portfolio_with_daily_fallback
+2026Q2Q3_reused,rsi_fade|hour_15_17|h1_opposite|weekly_opposite_side,15,5.005082964897156,0.3336721976598104,7,portfolio_with_daily_fallback
