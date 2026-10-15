@@ -1,0 +1,65 @@
+name: XAUUSD Structural Stop Lab V2
+on:
+  push:
+    paths:
+      - 'research/structural_v2/*.py'
+      - '.github/workflows/xauusd-structural-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-structural-v2-main
+  cancel-in-progress: false
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerics
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'numba==0.65.1'
+      - name: Generate 21 causal structural stop signal families and backtest 36192 variants
+        run: python 'research/structural_v2/research.py'
+      - name: Replay four complementary strategies without overlapping orders
+        run: python 'research/structural_v2/portfolio_test.py'
+      - name: Test structural risk-viability gate (do not relocate SL)
+        run: python 'research/structural_v2/risk_gate.py'
+      - name: Reproduce fully logged posthoc BOS30 candidate, with bootstrap intervals
+        run: python 'research/structural_v2/candidate_study.py'
+      - name: Generate 21 individual strategy documents and quality metrics
+        run: python 'research/structural_v2/make_reports.py'
+      - name: Assert complete and conservative execution
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, pandas as pd
+          p=Path('research/structural_v2')
+          q=json.loads((p/'QA_reproducibility.json').read_text())
+          s=json.loads((p/'summary.json').read_text())
+          a=pd.read_csv(p/'all_structural_variants.csv')
+          l=pd.read_csv(p/'portfolio_4_2025_selected_trade_log.csv')
+          g=pd.read_csv(p/'structural_stop_viability_gates.csv')
+          z=pd.read_csv(p/'posthoc_BOS30_candidate_periods.csv')
+          assert q['candles_m1']==760337
+          assert q['actual_signals_count']==220638
+          assert len(a)==36192 and a.family.nunique()==21
+          assert len(l)==2226 and q['family_reports']==21
+          assert q['limits_no_more_than_120'] and q['observed_no_overlap'] and q['entry_hours_eligible']
+          assert len(g)==84 and len(z)==8
+          assert len(list((p/'family_reports').glob('*.md')))==21
+          assert l[l.date_israel>='2026-01-01'].netR_fee035.mean()<0
+          print('PASS',q)
+          PY
+      - name: Commit all raw evidence and reports to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/structural_v2/'
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish 36192 structural-stop simulations and 21 strategy reports'
+            git pull --rebase origin main
+            git push
+          fi
