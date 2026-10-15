@@ -1,0 +1,16 @@
+{
+  "candles_m1": 760337,
+  "expected_variants": 36192,
+  "executed_variants": 36192,
+  "signal_candidates": 220638,
+  "actual_signals_count": 220638,
+  "portfolio_trades": 2226,
+  "family_reports": 21,
+  "portfolio_trade_entry_range": [
+    "2025-01-02 06:23:00+00:00",
+    "2026-09-24 14:42:00+00:00"
+  ],
+  "observed_no_overlap": true,
+  "limits_no_more_than_120": true,
+  "entry_hours_eligible": true
+}

@@ -1,0 +1,47 @@
+{
+  "source_m1": 760337,
+  "signal_count": 220638,
+  "family_count": 21,
+  "tested_variants": 36192,
+  "eligible_selected_families": 21,
+  "base_cost": 0.35,
+  "management": "structural initial stops: origin wick/last swing/FVG boundary; no fixed ATR stop",
+  "period_coverage": [
+    {
+      "period": "2025_H1",
+      "market_days": 126,
+      "selected_family_trades": 2493,
+      "selected_family_unique_days": 126,
+      "selected_family_union_coverage_pct": 100.0
+    },
+    {
+      "period": "2025_H2",
+      "market_days": 131,
+      "selected_family_trades": 2742,
+      "selected_family_unique_days": 131,
+      "selected_family_union_coverage_pct": 100.0
+    },
+    {
+      "period": "2026_Q1",
+      "market_days": 63,
+      "selected_family_trades": 1260,
+      "selected_family_unique_days": 63,
+      "selected_family_union_coverage_pct": 100.0
+    },
+    {
+      "period": "2026_Q2Q3_REUSED",
+      "market_days": 126,
+      "selected_family_trades": 3245,
+      "selected_family_unique_days": 126,
+      "selected_family_union_coverage_pct": 100.0
+    }
+  ],
+  "runtime_sec": 29.32,
+  "caveats": [
+    "retrospective 15M and 5M winning legs are excluded from signals",
+    "this dataset used repeatedly in prior studies; no untouched 2026 holdout",
+    "bid-only data with assumed friction, execution uncertain",
+    "same-minute high/low order unknown, stop-first fill",
+    "no full trading session quote/spread history"
+  ]
+}

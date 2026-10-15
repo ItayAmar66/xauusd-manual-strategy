@@ -1,0 +1,50 @@
+[
+  {
+    "family": "D1_SWEEP",
+    "filter": "h4_aligned",
+    "session": "ny_15_18",
+    "entry_mode": 3,
+    "target_R": 8,
+    "management": 4,
+    "h1_n": 66,
+    "h1_R": 0.4358264871044753,
+    "h2_n": 69,
+    "h2_R": 0.6123969260977986
+  },
+  {
+    "family": "BOS15_PULLBACK",
+    "filter": "h1_m15_aligned",
+    "session": "london_08_13",
+    "entry_mode": 2,
+    "target_R": 5,
+    "management": 0,
+    "h1_n": 294,
+    "h1_R": 0.173056300666941,
+    "h2_n": 318,
+    "h2_R": 0.1273898143087744
+  },
+  {
+    "family": "BOS30_PULLBACK",
+    "filter": "h1_m15_aligned",
+    "session": "ny_15_18",
+    "entry_mode": 1,
+    "target_R": 5,
+    "management": 0,
+    "h1_n": 168,
+    "h1_R": 0.1463472707452233,
+    "h2_n": 172,
+    "h2_R": 0.1529616617414305
+  },
+  {
+    "family": "FVG_M15",
+    "filter": "h1_aligned",
+    "session": "ny_14_19",
+    "entry_mode": 3,
+    "target_R": 8,
+    "management": 0,
+    "h1_n": 168,
+    "h1_R": 0.0621955247938445,
+    "h2_n": 175,
+    "h2_R": 0.0815119937550749
+  }
+]

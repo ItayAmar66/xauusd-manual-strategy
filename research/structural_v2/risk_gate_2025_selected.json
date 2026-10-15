@@ -1,0 +1,47 @@
+[
+  {
+    "train_min_half_R": 0.10523778612976287,
+    "min_structural_risk": 1.0,
+    "max_structural_risk": 150.0,
+    "review_2026Q1_R": -0.19090124540833325,
+    "review_2026Q2Q3_R": -0.05282314827527247,
+    "review_2026Q1_coverage": 98.4126984126984,
+    "review_2026Q2Q3_coverage": 99.20634920634922
+  },
+  {
+    "train_min_half_R": 0.1035478589201623,
+    "min_structural_risk": 1.0,
+    "max_structural_risk": 30.0,
+    "review_2026Q1_R": -0.16869083478855165,
+    "review_2026Q2Q3_R": -0.05281263963293658,
+    "review_2026Q1_coverage": 98.4126984126984,
+    "review_2026Q2Q3_coverage": 99.20634920634922
+  },
+  {
+    "train_min_half_R": 0.10067503143868613,
+    "min_structural_risk": 0.65,
+    "max_structural_risk": 150.0,
+    "review_2026Q1_R": -0.19803593874837797,
+    "review_2026Q2Q3_R": -0.07452176470952736,
+    "review_2026Q1_coverage": 98.4126984126984,
+    "review_2026Q2Q3_coverage": 99.20634920634922
+  },
+  {
+    "train_min_half_R": 0.09904873403594879,
+    "min_structural_risk": 0.65,
+    "max_structural_risk": 30.0,
+    "review_2026Q1_R": -0.17619130922377507,
+    "review_2026Q2Q3_R": -0.07021510329958258,
+    "review_2026Q1_coverage": 98.4126984126984,
+    "review_2026Q2Q3_coverage": 99.20634920634922
+  },
+  {
+    "train_min_half_R": 0.08821638952643343,
+    "min_structural_risk": 1.0,
+    "max_structural_risk": 15.0,
+    "review_2026Q1_R": -0.13310888111031707,
+    "review_2026Q2Q3_R": -0.04850361900219785,
+    "review_2026Q1_coverage": 90.47619047619048,
+    "review_2026Q2Q3_coverage": 99.20634920634922
+  }
+]
