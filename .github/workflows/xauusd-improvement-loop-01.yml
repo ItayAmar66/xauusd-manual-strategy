@@ -1,0 +1,57 @@
+name: XAUUSD Improvement Loop 01 — Entry Path and Exit Ablation
+on:
+  push:
+    paths:
+      - 'research/improvement_loop_01/*.py'
+      - '.github/workflows/xauusd-improvement-loop-01.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-improvement-loop-01
+  cancel-in-progress: false
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3'
+      - name: Diagnose path of all 253 selected M1 entries
+        run: python 'research/improvement_loop_01/audit.py'
+      - name: Replay 30 matched-entry management variants and bootstrap weeks
+        run: python 'research/improvement_loop_01/management_ablation.py'
+      - name: Validate exact baseline and no target leakage in selection
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          p=Path('research/improvement_loop_01')
+          d=pd.read_csv(p/'matched_entry_management_30x3.csv')
+          t=pd.read_csv(p/'matched_entry_management_trades.csv')
+          q=pd.read_csv(p/'period_diagnostics.csv')
+          b=pd.read_csv(p/'bootstrap_paired_weekly.csv')
+          s=pd.read_csv(p/'management_selected_train_only.csv')
+          assert len(d)==90 and len(t)==7590
+          assert len(q)==3 and len(b)==15 and len(s)==30
+          assert (s.iloc[0]['rule']=='TP6_fixed')
+          x=d[(d.rule=='TP3_fixed')&(d.period=='REUSED_2026Q2Q3')].avg_R.iloc[0]
+          y=d[(d.rule=='TP6_fixed')&(d.period=='REUSED_2026Q2Q3')].avg_R.iloc[0]
+          assert -0.023 < x < -0.021 and 0.117 < y < 0.119,(x,y)
+          assert (t.duration_minutes<=120).all()
+          assert (t.groupby('rule').size()==253).all()
+          print('PASS: baseline identical, 30 controlled management variants, 7590 replayed trades')
+          PY
+      - name: Commit generated research results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/improvement_loop_01/'*.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'research(loop01): publish exact entry-cohort payoff and bootstrap ablation'
+            git pull --rebase origin main
+            git push
+          fi
