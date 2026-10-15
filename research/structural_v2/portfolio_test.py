@@ -39,7 +39,7 @@ for order,r in enumerate(recipes):
  v['recipe']=r['family'];v['priority']=order;v['mode']=int(r['entry_mode']);v['rr']=int(r['target_R']);v['mgmt']=int(r['management']);sub.append(v)
 all_=pd.concat(sub).sort_values(['entry_m1','priority']).reset_index(drop=True)
 @njit
-def stream(jj,sg,side,stop,ref,modes,rrs,mgmts,priority,op,hi,lo,cl,ts,can):
+def stream(jj,sg,side,stop,ref,modes,rrs,mgmts,priority,op,hi,lo,cl,ts,can,minrisk,maxrisk):
  out=np.empty((len(jj),15),dtype=np.float64);n=0;locked=-1
  for z in range(len(jj)):
   j=int(jj[z]);si=int(sg[z]);d=int(side[z]);st=stop[z];r=ref[z];mode=int(modes[z]);rr=int(rrs[z]);mgmt=int(mgmts[z])
@@ -60,7 +60,7 @@ def stream(jj,sg,side,stop,ref,modes,rrs,mgmts,priority,op,hi,lo,cl,ts,can):
    if filled<0:
     locked=min(len(op)-1,j+15);continue
   risk=(p-st)*d
-  if risk<.65 or risk>150:continue
+  if risk<minrisk or risk>maxrisk:continue
   target=p+d*rr*risk;curst=st;xp=p;ex=filled;why=9;maxf=0
   for k in range(filled,len(op)):
    if ts[k]-ts[filled]>=120:xp=op[k];ex=k;why=0;break
@@ -85,7 +85,7 @@ def stream(jj,sg,side,stop,ref,modes,rrs,mgmts,priority,op,hi,lo,cl,ts,can):
    if d==-1 and canst<curst:curst=canst
   out[n,:]=np.array([j,filled,ex,z,d,p,st,xp,risk,(xp-p)*d/risk-.35/risk,ts[ex]-ts[filled],why,rr,mode,mgmt]);n+=1;locked=ex
  return out[:n]
-res=stream(all_.entry_m1.to_numpy(np.int64),all_.signal_m1.to_numpy(np.int64),all_.side.to_numpy(np.int8),all_.stop.to_numpy(float),all_.reference.to_numpy(float),all_['mode'].to_numpy(int),all_.rr.to_numpy(int),all_.mgmt.to_numpy(int),all_.priority.to_numpy(int),o,h,l,c,t,allowed)
+res=stream(all_.entry_m1.to_numpy(np.int64),all_.signal_m1.to_numpy(np.int64),all_.side.to_numpy(np.int8),all_.stop.to_numpy(float),all_.reference.to_numpy(float),all_['mode'].to_numpy(int),all_.rr.to_numpy(int),all_.mgmt.to_numpy(int),all_.priority.to_numpy(int),o,h,l,c,t,allowed,.65,150)
 rows=[]
 for v in res:
  j,fi,ex,zz=[int(z) for z in v[:4]]
