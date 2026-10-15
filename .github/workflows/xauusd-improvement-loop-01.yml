@@ -24,6 +24,8 @@ jobs:
         run: python 'research/improvement_loop_01/audit.py'
       - name: Replay 30 matched-entry management variants and bootstrap weeks
         run: python 'research/improvement_loop_01/management_ablation.py'
+      - name: Test causal confirmation timing and candle geometry gates
+        run: python 'research/improvement_loop_01/entry_filter_ablation.py'
       - name: Validate exact baseline and no target leakage in selection
         run: |
           python - <<'PY'
@@ -43,6 +45,13 @@ jobs:
           assert -0.023 < x < -0.021 and 0.117 < y < 0.119,(x,y)
           assert (t.duration_minutes<=120).all()
           assert (t.groupby('rule').size()==253).all()
+          gate=pd.read_csv(p/'entry_filter_16x4.csv')
+          rank=pd.read_csv(p/'entry_filter_2025_rank.csv')
+          conf=pd.read_csv(p/'entry_features_on_253_original_entries.csv')
+          boot=pd.read_csv(p/'entry_gate_week_bootstrap.csv')
+          assert gate['filter'].nunique()==16 and len(conf)==253
+          assert len(boot)==9 and rank.iloc[0]['filter']=='CONFIRM_LAG_LE3'
+          assert gate.query("filter=='CONFIRM_LAG_LE3' and period=='2026Q2Q3'").iloc[0].avg_R>0.239
           print('PASS: baseline identical, 30 controlled management variants, 7590 replayed trades')
           PY
       - name: Commit generated research results
