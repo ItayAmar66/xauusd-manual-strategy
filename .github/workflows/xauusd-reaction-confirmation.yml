@@ -1,0 +1,63 @@
+name: XAUUSD M1 Reaction Confirmation Study
+on:
+  push:
+    paths:
+      - 'research/reaction_confirmation_lab/*.py'
+      - '.github/workflows/xauusd-reaction-confirmation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-reaction-confirmation
+  cancel-in-progress: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scientific stack
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'numba==0.65.1'
+      - name: Generate all historically executable zone-plus-M1-confirmation tests
+        run: python 'research/reaction_confirmation_lab/research.py'
+      - name: Check direct-entry versus M1-confirmation and uncertainty
+        run: python 'research/reaction_confirmation_lab/diagnostics.py'
+      - name: Verify inventory and trade audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, pandas as pd
+          P=Path('research/reaction_confirmation_lab')
+          s=json.loads((P/'summary.json').read_text())
+          a=pd.read_csv(P/'phase1_all_strategies.csv')
+          b=pd.read_csv(P/'phase2_selected_144_variants.csv')
+          t=pd.read_csv(P/'train_chosen_trade_log.csv')
+          inv=pd.read_csv(P/'confirmed_entry_inventory.csv')
+          d=pd.read_csv(P/'immediate_vs_confirmed_by_period.csv')
+          cov=pd.read_csv(P/'daily_coverage_comparison.csv')
+          assert s['candles_m1']==760337
+          assert (s['zone_anchor_signals'],s['m1_confirmed_candidates'])==(124751,228908)
+          assert len(inv)==228908
+          assert len(a)==9505 and len(b)==144 and len(t)==253
+          assert len(d)==8 and len(cov)==4
+          assert (t.entry_price>0).all() and (t.risk_price>0).all()
+          assert (t.period=='TRAIN_2025').sum()==133
+          assert (t.period=='REUSED_2026Q1').sum()==41
+          assert (t.period=='REUSED_2026Q2Q3').sum()==79
+          assert t[t.period=='REUSED_2026Q2Q3'].net_R.mean()<0
+          assert a[(a.train_n>=100)&(a.TP_R==3)&(a.train_WR>=50)].empty
+          print('PASS: reproducible full-market screen and 253 next-bar executable fills')
+          PY
+      - name: Commit verified raw outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/reaction_confirmation_lab/'*.csv 'research/reaction_confirmation_lab/'*.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: 9505 M1 reaction confirmations, 144 exit variants, detailed causal trade logs'
+            git pull --rebase origin main
+            git push
+          fi
