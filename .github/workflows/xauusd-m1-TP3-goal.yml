@@ -1,0 +1,54 @@
+name: XAUUSD M1 Exact TP3 Target Audit
+on:
+  push:
+    paths:
+      - 'research/m1_tp3_50pct_goal/repro_from_market_tape.py'
+      - '.github/workflows/xauusd-m1-TP3-goal.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-m1-tp3-goal
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen scientific stack
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'scikit-learn==1.8.0'
+      - name: Rebuild lagged market features, TP3-hit labels, two candidate classifiers
+        run: python 'research/m1_tp3_50pct_goal/repro_from_market_tape.py'
+      - name: Verify no model-selection leakage and unsatisfied goals disclosed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path('research/m1_tp3_50pct_goal')
+          r=json.loads((p/'summary.json').read_text())
+          a=pd.read_csv(p/'discrimination_by_period.csv')
+          b=pd.read_csv(p/'causal_online_gate_56_results.csv')
+          trades=pd.read_csv(p/'selected_online_trades.csv')
+          assert r['candles']==760337 and r['strategy_candidates']==25843 and r['strategies']==9
+          assert len(a)==8 and len(b)==56
+          assert r['chosen_by_validation']['period']=='2025H2_VALID'
+          assert len(trades)>400 and not trades.duplicated('date').any()
+          q=b[(b.model==r['chosen_by_validation']['model'])&(b.threshold==r['chosen_by_validation']['threshold'])&(b.period=='2026Q2Q3_REUSED')].iloc[0]
+          assert q.full_3R_hit_pct<50 and q.coverage_pct<100 and q.mean_net_R<0
+          assert (a.period=='2026Q2Q3_REUSED').sum()==2
+          print('PASS: full M1 causal features, 56 train-before-test policy cells, no invented 50% TP3 edge')
+          PY
+      - name: Commit canonical research outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/m1_tp3_50pct_goal/'*.csv 'research/m1_tp3_50pct_goal/'*.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish fully replayable M1 TP3 classification tests and trade log'
+            git pull --rebase origin main
+            git push
+          fi
