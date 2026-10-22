@@ -1,0 +1,65 @@
+name: XAUUSD Weekly Strategy Rotation Research
+on:
+  push:
+    paths:
+      - 'research/m1_rotating_strategies/weekly/weekly_rotation.py'
+      - '.github/workflows/xauusd-m1-weekly-rotation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-weekly-rotation-main
+  cancel-in-progress: false
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical stack
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3'
+      - name: Run 300 past-only rotation policies over 10 paper playbooks
+        run: python 'research/m1_rotating_strategies/weekly/weekly_rotation.py'
+      - name: Validate weekly switches, full 3R filters and per-trade audits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path('research/m1_rotating_strategies/weekly')
+          s=json.loads((p/'summary.json').read_text())
+          r=pd.read_csv(p/'all_300_weekly_rotation_policy_scores.csv')
+          q=pd.read_csv(p/'exact_user_rule_weekly_switches.csv')
+          x=pd.read_csv(p/'exact_user_rule_trades.csv')
+          w=pd.read_csv(p/'weekly_rotation_comparison.csv')
+          g=pd.read_csv(p/'strict_50pct_3R_weekly_gate.csv')
+          b=pd.read_csv(p/'exclude_archive_and_rare_sensitivity.csv')
+          z=pd.read_csv(p/'train_selected_rotation_trade_log.csv')
+          assert s['source_rows']==26999 and s['models']==10
+          assert s['evaluation_week_count']==81 and s['scanned_policies']==300
+          assert len(r)==1244 and len(q)==81 and len(g)==64 and len(b)==20
+          assert q.execution_week.is_monotonic_increasing
+          assert (q.prior_week<q.execution_week).all()
+          assert (q.prior_window_start<q.execution_week).all()
+          assert (r.coverage_pct<=100.00001).all()
+          for v in [x,z]:
+              assert (v.entry_idx.iloc[1:].to_numpy()>v.exit_idx.iloc[:-1].to_numpy()).all()
+              assert (v.duration_min<=120).all()
+          h=w[(w.policy=='EXACT_PREVIOUS_WEEK_WINNER')&(w.period=='2026Q2Q3')].iloc[0]
+          assert h.n>950 and -.09<h.mean_R<-.065
+          assert w[(w.policy=='W8_SHRUNK')&(w.period=='2025')].mean_R.iloc[0]<0
+          assert w[(w.policy=='TRAIN_SELECTED')&(w.period=='2026Q1')].mean_R.iloc[0]<0
+          print('PASS: 300 lookback variants, 81 decisions, no overlapping trades, all observed historical outcomes.')
+          PY
+      - name: Save all fixed rule decisions, trade logs and comparison tables
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/m1_rotating_strategies/weekly/'*.csv 'research/m1_rotating_strategies/weekly/'*.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: verify 300 next-week selection rules, 81 weekly switches and full trade logs'
+            git pull --rebase origin main
+            git push
+          fi
