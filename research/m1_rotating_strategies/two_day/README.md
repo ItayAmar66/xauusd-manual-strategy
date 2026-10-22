@@ -29,13 +29,13 @@ The answer from this first set of implementations is **NO, not by this test**. T
 
 | Market period | Strategy policy | Filled trades | Full 3R TP hit % | Net avg R/trade | Traded days / eligible days |
 |---|---|---:|---:|---:|---:|
-| 2025 development | All 10, no switching | 4,473 | 19.61% | −0.100R | 257/259 |
+| 2025 development | All 10, no switching | 4,474 | 19.60% | −0.101R | 257/259 |
 | 2025 development | 2-day pooled 50% | 231 | 20.35% | −0.114R | 47/259 |
 | 2025 development | ≥50% each day | 98 | 24.49% | +0.028R | 24/259 |
 | 2026 Jan–Mar reused | All 10 | 1,252 | 18.85% | −0.113R | 63/64 |
 | 2026 Jan–Mar reused | 2-day pooled 50% | 62 | 12.90% | −0.507R | 9/64 |
 | 2026 Jan–Mar reused | ≥50% each day | 22 | 9.09% | −0.563R | 3/64 |
-| 2026 Apr–Sep reused | All 10 | 2,293 | 19.80% | −0.065R | 126/126 |
+| 2026 Apr–Sep reused | All 10 | 2,293 | 19.76% | −0.066R | 126/126 |
 | 2026 Apr–Sep reused | 2-day pooled 50% | 110 | 17.27% | −0.234R | 25/126 |
 | 2026 Apr–Sep reused | ≥50% each day | 59 | 16.95% | −0.238R | 11/126 |
 | 2026 Apr–Sep reused | pooled 50%, min 4 prior trades | 98 | 18.37% | −0.166R | 21/126 |
@@ -64,3 +64,4 @@ The 2025 strict 2-day test's small positive expectancy is not evidence of advant
 - `QA_summary.json` and `summary.json` — limitations and statistics.
 
 **No historical trade here is investment advice, or proof that a strategy will perform similarly live.**
+**Environment precision:** The canonical pinned GitHub Actions rebuild gives 4,474 unfiltered portfolio trades in 2025 (local environment 4,473) and −0.066R average in the latest reused review (local approx −0.065R). Exact 2-day-gated late-period results **match** across environments: 110 trades, −0.234R. See stored CSVs for authoritative GitHub-run values; freeze the full system stack and audit this one-fill discrepancy before any live use.
