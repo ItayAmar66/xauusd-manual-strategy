@@ -1,0 +1,65 @@
+name: XAUUSD M1 Rotation — Two Completed Days
+on:
+  push:
+    paths:
+      - 'research/m1_rotating_strategies/two_day/*.py'
+      - '.github/workflows/xauusd-m1-two-day-rotation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-m1-two-day-rotation
+  cancel-in-progress: false
+jobs:
+  historical_test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install reproducible numerical dependencies
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'numba==0.65.1'
+      - name: Rebuild ten M1 proxy playbooks and strict 2-day 3R rotation
+        run: python 'research/m1_rotating_strategies/two_day/rotation_research.py'
+      - name: Validate history-only gates, per-model lift, and calendar-day bootstrap
+        run: python 'research/m1_rotating_strategies/two_day/diagnostics.py'
+      - name: Guard against leakage, overlaps and understated trade counts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd, json
+          P=Path('research/m1_rotating_strategies/two_day')
+          m=pd.read_csv(P/'rotation_policy_metrics.csv')
+          t=pd.read_csv(P/'all_ten_strategy_trades.csv')
+          g=pd.read_csv(P/'two_day_eligibility_by_strategy_date.csv')
+          q=json.loads((P/'summary.json').read_text())
+          assert q['candles']==760337
+          assert q['strategy_count']==10
+          assert t.strategy.nunique()==10
+          assert len(t)>25000 and len(g)>4400
+          assert (t.duration_min<=120).all()
+          assert (g.date>g.prev_day2).all() and (g.prev_day2>g.prev_day1).all()
+          assert (g[g.active_aggregate].two_day_winrate>=0.5).all()
+          assert (g[g.active_aggregate].two_day_mean_R>0).all()
+          for pol in ('all','gate_agg','gate_strict','gate_min4'):
+            z=pd.read_csv(P/f'portfolio_{pol}_trades.csv')
+            assert (z.duration_min<=120).all()
+            assert (z.entry_idx.iloc[1:].to_numpy()>z.exit_idx.iloc[:-1].to_numpy()).all()
+          x=m[(m.strategy=='PORTFOLIO') & (m.period=='2026Q2Q3_reused')]
+          assert int(x.loc[x.policy=='gate_agg','n'].iloc[0])>50
+          assert float(x.loc[x.policy=='gate_agg','avg_R'].iloc[0])<0
+          assert (x.avg_R<0).all()
+          print('PASS: historical 3R-gated rotation causal daily selection and single-position replay')
+          PY
+      - name: Save source-output evidence to GitHub
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/m1_rotating_strategies/two_day/'*.csv 'research/m1_rotating_strategies/two_day/'*.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish 10-playbook two-day activation tests and 26k shadow fills'
+            git pull --rebase origin main
+            git push
+          fi
