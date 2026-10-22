@@ -31,12 +31,12 @@ At the end of each completed trading week, identify which of ten M1 playbooks pe
 
 | Selection | 2025 (development) | Jan–Mar 2026 (reused) | Apr–Sep 2026 (reused) | Coverage of final 122 complete market days |
 |---|---:|---:|---:|---:|
-| **Previous 1-week winner**, exact user rule | −0.158 | −0.152 | **−0.077** (992 fills) | 112/122 = 91.8% |
-| 4-week risk-shrunken return, one model | −0.091 | −0.178 | −0.035 (547) | 109/122 = 89.3% |
-| 4-week risk-shrunken return, top two | −0.040 | −0.161 | −0.011 (1,136) | 122/122 = 100% |
-| 8-week risk-shrunken return, one model | −0.091 | −0.130 | **+0.085** (613) | 115/122 = 94.3% |
-| **Train-2025-selected** policy: 8wk shrink, >=12 trades, inertia 0.15, top2 | −0.017 | −0.124 | **−0.005** (893) | 120/122 = 98.4% |
-| First signal among all 10, no selection | −0.102 | −0.161 | −0.042 (2,087) | 122/122 = 100% |
+| **Previous 1-week winner**, exact user rule | −0.158 | −0.152 | **−0.078** (992 fills) | 112/122 = 91.8% |
+| 4-week risk-shrunken return, one model | −0.092 | −0.178 | −0.035 (545) | 109/122 = 89.3% |
+| 4-week risk-shrunken return, top two | −0.045 | −0.161 | −0.004 (1,096) | 122/122 = 100% |
+| 8-week risk-shrunken return, one model | −0.092 | −0.129 | **+0.083** (610) | 115/122 = 94.3% |
+| **Train-2025-selected** policy: 8wk mean, >=12 trades, inertia 0.15, top2 | −0.011 | −0.123 | **−0.002** (876) | 120/122 = 98.4% |
+| First signal among all 10, no selection | −0.102 | −0.160 | −0.042 (2,088) | 122/122 = 100% |
 
 **Selection mechanism:** 300 combinations (`5 lookbacks × 5 scores × 3 sample minimums × 2 inertia values × 2 top counts`). The `TRAIN_SELECTED` policy was chosen by **2025 only**, maximizing mean R with a sample-size penalty and a >=120 fill floor, and subsequently checked on 2026. It did **not** exhibit a consistently positive advantage. The 8-week positive late-2026 number was discovered during exploratory comparisons and was **negative in prior regimes**. It is not a verified edge or reason to start live trading.
 
@@ -81,3 +81,4 @@ Also tested a stricter weekly gate: previous week's paper strategy must have pos
 - `bootstrap_weekly_paired_comparison.csv`: exploratory week-resampling confidence ranges on extra cumulative R, not familywise-corrected.
 
 **Conclusion:** Weekly rotation is a sensible hypothesis to test, but the simplest rule (last week's winner) **failed** here, and longer windows did not produce a consistently validated profitable strategy. These are historical proxy trades, not forecasts or broker-executable signals.
+**Canonical rebuild:** The GitHub Actions run uses the committed prior-source trade-log snapshot. The developer's local snapshot differs by 35 bytes (a few floating-point net-R values), which can alter close policy rankings and borderline first-signal fills. The GitHub run selected **8W mean + 12-minimum + 0.15 switching margin + top two** on 2025. All headline values here use committed CI-generated tables; do not mix the local snapshot's policy winner with these data.
