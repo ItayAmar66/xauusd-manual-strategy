@@ -1,0 +1,33 @@
+{
+  "method": "2025H2 model selection; 2026Q1 validation; Apr-Sep2026 reused review; no fresh holdout",
+  "model_warning": "9 simplified, nonvalidated ICT strategy proxies; original archived baseline omitted",
+  "source_shadow_trades": 25843,
+  "eligible_days": 446,
+  "policy_count": 480,
+  "fall_back_rule": "At 17:55, only when no previous fill: trade direction of past 60m, SL beyond prior 15m candle extreme by 0.10, TP=3R, <=120min, cost .35 USD/oz bid approximation",
+  "best_2025H2_policy_id": 414,
+  "chosen_2025H2_parameters": {
+    "lookback_days": "40",
+    "top_k": "2",
+    "min_shadow_trades": "8",
+    "score": "win3",
+    "positive_score_only": "False",
+    "hours": "ny",
+    "max_trades_per_day": "1"
+  },
+  "best_2025H2_avgR": 0.16630746267358767,
+  "chosen_2026Q1_avgR": -0.16042879249445868,
+  "chosen_2026_reused_avgR": -0.10721223171595386,
+  "chosen_2026_reused_bootstrap_CI95_R": [
+    -0.41289773808783486,
+    -0.1067395089694671,
+    0.23175811812955052
+  ],
+  "2026_reused_oracle_mean_R": 2.952485862144566,
+  "2026_reused_any3R_candidate_day_pct": 100.0,
+  "2026_reused_any_profitable_day_pct": 100.0,
+  "cost_price_units": 0.35,
+  "data_start": "1735689600000",
+  "data_end": "1790294280000",
+  "performance_status": "NOT A VERIFIED +1R PER-TRADE STRATEGY; reused historical periods; no tick/spread"
+}

@@ -1,0 +1,37 @@
+{
+  "model_training": "January-June 2025 fixed; thresholds based only July-December 2025; no refit in 2026",
+  "models": [
+    "ridge",
+    "hgb_regression"
+  ],
+  "features": [
+    "hour",
+    "weekday",
+    "risk_usd",
+    "fee_R",
+    "risk_to_vol20",
+    "vol20",
+    "vol60",
+    "impulse_5_m1",
+    "impulse_15_m1",
+    "impulse_60_m1",
+    "prev_candle_body",
+    "prev_candle_range",
+    "near_prev15_high",
+    "near_prev15_low",
+    "long_side",
+    "S_02_AMD_iFVG_proxy",
+    "S_03_PDH_PDL_raid_MSS_FVG",
+    "S_04_Unicorn_overlap_proxy",
+    "S_05_H1_FVG_rejection",
+    "S_06_OTE_H1_bar_retrace_proxy",
+    "S_07_Asia_raid_reclaim",
+    "S_08_Trend_M1_FVG_retest",
+    "S_09_Compression_break_retest",
+    "S_10_BPR_opposite_FVG_overlap_proxy"
+  ],
+  "n_training_trades": 6201,
+  "n_validation_trades": 6508,
+  "n_2026_shadow": 9810,
+  "limitations": "May have correlated/duplicated labels across simultaneous strategies; 2026 reused many times; no true tick or live execution"
+}
