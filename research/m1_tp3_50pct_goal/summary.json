@@ -1,0 +1,28 @@
+{
+  "candles": 760337,
+  "strategy_candidates": 25843,
+  "strategies": 9,
+  "targetR": 3,
+  "train": "2025-01-01 through 2025-06-30",
+  "validation": "2025-07-01 through 2025-12-31",
+  "evaluations": [
+    "2026Q1",
+    "2026Q2Q3_REUSED"
+  ],
+  "chosen_by_validation": {
+    "model": "shallow_tree",
+    "threshold": 0.25,
+    "period": "2025H2_VALID",
+    "n": 129,
+    "possible_days": 131,
+    "days_covered": 129,
+    "coverage_pct": 98.47328244274809,
+    "full_3R_hit_pct": 27.131782945736433,
+    "mean_net_R": -0.03755049571004633,
+    "cost_R": 0.20054300032726105
+  },
+  "noncausal_oracle_warning": "No best-of-day selection after observing results",
+  "data_warning": "Nine simplified proxy playbooks, not final audited ICT/custom implementations; OHLC bid + synthetic .35 friction",
+  "full_3R_win_required": "50% full TP3 per trade; 50% only achieves +1R gross when all other outcomes exactly -1R",
+  "review_not_fresh": true
+}
