@@ -1,0 +1,23 @@
+{
+  "source_rows": 26999,
+  "models": 10,
+  "source_warning": "Original archive model and nine simplified proxies NOT independently validated against full discretionary ICT rules",
+  "full_data_first_week": "2024-12-30",
+  "full_data_last_week": "2026-09-21",
+  "evaluation_week_count": 81,
+  "evaluation_first": "2025-03-03",
+  "evaluation_last": "2026-09-14",
+  "scanned_policies": 300,
+  "train_selected_policy": "ROT_8W_mean_min12_h0.15_top2",
+  "selection_criterion": "2025 mean R minus 0.2 sqrt(250/n), n>=120; 2026 never used in selection",
+  "fixed_2025_total_R_winner": "01_original_CHoCH_breaker_FVG_ARCHIVE",
+  "exact_switches": 70,
+  "no_model_reconstruction": "Uses prior backtest trade logs as shadow trading; cannot validate actual execution/strategy correctness",
+  "caveats": [
+    "2026 reviewed repeatedly; no fresh OOS",
+    "per-trade bid OHLC approximated friction",
+    "source 01 is archival different payoff and requires correction",
+    "weekly selection assumes simulated outcome of all inactive strategies is observed",
+    "avoid live deployment from this experiment"
+  ]
+}
