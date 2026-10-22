@@ -1,0 +1,39 @@
+name: XAUUSD Daily Coverage and +1R Feasibility
+on:
+  push:
+    paths:
+      - 'research/oneR_daily_feasibility/*.py'
+      - '.github/workflows/xauusd-oneR-daily-feasibility.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: xauusd-oneR-daily-feasibility
+  cancel-in-progress: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned dependencies
+        run: python -m pip install 'numpy==2.3.5' 'pandas==2.2.3' 'scikit-learn==1.8.0'
+      - name: Replay 480 causal portfolio rules, 17:55 structural fallback, oracle control
+        run: python 'research/oneR_daily_feasibility/experiment.py'
+      - name: Fit two 2025 M1 predictor models and freeze thresholds before 2026
+        run: python 'research/oneR_daily_feasibility/ml_gate.py'
+      - name: Validate complete execution coverage, no time overruns, and honest target status
+        run: python 'research/oneR_daily_feasibility/QA.py'
+      - name: Commit source-verified data and logs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'research/oneR_daily_feasibility/'*.csv 'research/oneR_daily_feasibility/'*.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: publish 480 causal daily coverage trials and ML rating results'
+            git pull --rebase origin main
+            git push
+          fi
