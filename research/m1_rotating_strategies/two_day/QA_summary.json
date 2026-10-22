@@ -1,0 +1,20 @@
+{
+  "declaration": "Win for the 2-day activation gate means an actual 3R TP fill (reason==1), not just positive time exit",
+  "decide_when": "Start of next eligible Israel market day, after outcomes of preceding two completed weekdays",
+  "min_completed_trades_each_prev_day": 1,
+  "minimum_closed_history": 2,
+  "cross_market_positioning": "replay from all raw candidate signals; only one portfolio position; no overlapping fills",
+  "next_day_negative_at_50pct": "checked in the saved metrics",
+  "data_reuse_warning": "2026 data has been reviewed many times already, so no truly untouched holdout",
+  "original_strategy_warning": "archive of historical signals only, causal entry model not reimplemented",
+  "proxies_warning": "other nine are reduced experimental implementations and are not certified ICT strategy definitions",
+  "FVG_warning": "the reference gap can persist without fully validated lifecycle/mitigation, especially H1/AMD",
+  "same_bar_stop_first": true,
+  "slippage_spread": "0.35 XAUUSD price units approximate roundtrip, not broker confirmed",
+  "max_holding_minutes": 120,
+  "number_of_strategy_rules": 10,
+  "filled_paper_trades": 26999,
+  "trade_period_rows": 83,
+  "days_eligibility_rows": 4470,
+  "seed_bootstrap": 20261022
+}

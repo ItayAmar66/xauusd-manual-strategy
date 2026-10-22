@@ -1,0 +1,15 @@
+{
+  "candles": 760337,
+  "market_days": 449,
+  "strategy_count": 10,
+  "total_signals": 67427,
+  "total_completed_trades": 26999,
+  "cost_price_units": 0.35,
+  "target_R": 3.0,
+  "allowed_hours": "06:00-20:00 Asia/Jerusalem",
+  "decision": "06:00 of next market day; last two full market days; no contemporaneous performance",
+  "lookback": "2 completed market days",
+  "archive_strategy_warning": "original baseline trades are prior-research archival outputs and have not been fully causal-audited",
+  "rule_proxy_warning": "other 9 are simplified first executable implementations; not identical to full ICT user concepts",
+  "review_warning": "2026 used repeatedly and is not fresh holdout"
+}
